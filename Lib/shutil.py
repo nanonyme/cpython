@@ -411,7 +411,7 @@ def ignore_patterns(*patterns):
     return _ignore_patterns
 
 def copytree(src, dst, symlinks=False, ignore=None, copy_function=copy2,
-             ignore_dangling_symlinks=False):
+             ignore_dangling_symlinks=False, exist_ok=False):
     """Recursively copy a directory tree.
 
     The destination directory must not already exist.
@@ -444,6 +444,8 @@ def copytree(src, dst, symlinks=False, ignore=None, copy_function=copy2,
     to copy each file. It will be called with the source path and the
     destination path as arguments. By default, copy2() is used, but any
     function that supports the same signature (like copy()) can be used.
+    
+    If given, exist_ok allows copying over existing directory structure
 
     """
     names = os.listdir(src)
@@ -452,7 +454,7 @@ def copytree(src, dst, symlinks=False, ignore=None, copy_function=copy2,
     else:
         ignored_names = set()
 
-    os.makedirs(dst)
+    os.makedirs(dst, exist_ok=exist_ok)
     errors = []
     for name in names:
         if name in ignored_names:
